@@ -1,5 +1,5 @@
 # linkedin-job-scraper
-Uses Selenium + BeautifulSoup in Python to automatically login to LinkedIn, make a job search, store results (title, company name, location, link to application page) in a CSV file for easy offline tracking
+Uses Selenium + BeautifulSoup in Python to automatically login to LinkedIn, make a job search, store results (title, company name, location, link to application page) in a CSV file for easy offline tracking of your jobs and applications
 
 Instructions:
 1. Download Selenium, BeautifulSoup, Chrome Webdriver
