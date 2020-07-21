@@ -6,6 +6,7 @@ from time import sleep
 import datetime
 import math
 import os
+import csv
 
 cwd = os.getcwd()
 driver = webdriver.Chrome(credentials["driverpath"])
@@ -38,7 +39,8 @@ location.send_keys(params["Location"], Keys.RETURN)
 sleep(4)
 
 #further job filtering - first find and click "All filters"
-filter_button = driver.find_element(by='xpath', value='/html/body/div[8]/div[3]/div[2]/section/div/div/button')
+# filter_button = driver.find_element(by='xpath', value='/html/body/div[8]/div[3]/div[2]/section/div/div/button')
+filter_button = driver.find_element(by='xpath', value='/html/body/div[7]/div[3]/div[2]/section/div/div/button')
 filter_button.click()
 sleep(2)
 
@@ -63,7 +65,8 @@ apply_button = driver.find_element(by='xpath', value='/html/body/div[4]/div/div/
 apply_button.click()
 sleep(2)
 
-num_results = driver.find_element(by='xpath', value='/html/body/div[8]/div[3]/div[2]/div[2]/div/div/section/header/div[1]/small').text
+# num_results = driver.find_element(by='xpath', value='/html/body/div[8]/div[3]/div[2]/div[2]/div/div/section/header/div[1]/small').text
+num_results = driver.find_element(by='xpath', value='/html/body/div[7]/div[3]/div[2]/div[2]/div/div/section/header/div[1]/small').text
 num_results = int(num_results[:-8])
 pages = math.ceil(num_results / 25)
 
@@ -72,18 +75,24 @@ today = str(datetime.date.today().strftime("%b-%d-%Y"))
 
 filename = "jobs_" + today + ".csv"
 f = open(os.path.join(cwd, filename), "w")
-headers = "Title, Company, Location, Link\n"
-f.write(headers)
+writer = csv.writer(f)
+writer.writerow(["Title", "Company", "Location", "Link"])
 
 for tag in soup.findAll('div', {"data-test-job-card-container":"true"}):
 	job_container = tag.find('div', attrs={'class':"flex-grow-1 artdeco-entity-lockup__content ember-view"})
-	job_title = job_container.find('a').text.replace(',', ' -').replace('\n', "")
-	job_link = linkedin_url + job_container.find('a')['href']
-	company_container = job_container.find('div', attrs={'class':"artdeco-entity-lockup__subtitle ember-view"})
-	company_name = company_container.find('a').text.replace(',', ' -').replace('\n', "")
-	location = job_container.find('div', attrs={'class':"artdeco-entity-lockup__caption ember-view"}).text.replace(',', ' /').replace('\n', "")
+	job_title = job_container.find('a').text.strip()
+	job_link = linkedin_url + job_container.find('a')['href'].strip()
 
-	f.write(job_title + ',' + company_name + ',' + location + ',' + job_link + '\n')
+	company_container = job_container.find('div', attrs={'class':"artdeco-entity-lockup__subtitle ember-view"})
+	company_name = company_container.find('a').text.strip()
+
+	location = job_container.find('div', attrs={'class':"artdeco-entity-lockup__caption ember-view"}).text.strip()
+
+	writer.writerow([job_title,
+		company_name,
+		location,
+		job_link])
+
 f.close()
 
 #Iterating through each job posting on a page
