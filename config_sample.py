@@ -1,5 +1,5 @@
 credentials = {
-	"driverpath": "/Users/David Bao/bin/chromedriver", #path to wherever chromedriver was installed
+	"driverpath": "/Users/SYSTEM USER NAME/bin/chromedriver", #path to wherever chromedriver was installed on your system
 	"username": "YOUR USERNAME",
 	"password": "YOUR PASSWORD"
 }

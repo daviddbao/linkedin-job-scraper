@@ -5,7 +5,9 @@ from bs4 import BeautifulSoup
 from time import sleep
 import datetime
 import math
+import os
 
+cwd = os.getcwd()
 driver = webdriver.Chrome(credentials["driverpath"])
 linkedin_url = 'https://www.linkedin.com'
 driver.get(linkedin_url)
@@ -65,11 +67,11 @@ num_results = driver.find_element(by='xpath', value='/html/body/div[8]/div[3]/di
 num_results = int(num_results[:-8])
 pages = math.ceil(num_results / 25)
 
-soup = BeautifulSoup(driver.page_source)
+soup = BeautifulSoup(driver.page_source, features="html.parser")
 today = str(datetime.date.today().strftime("%b-%d-%Y"))
 
 filename = "jobs_" + today + ".csv"
-f = open(filename, "w")
+f = open(os.path.join(cwd, filename), "w")
 headers = "Title, Company, Location, Link\n"
 f.write(headers)
 
