@@ -1,0 +1,6 @@
+#ignore config.py, protect my creds
+config.py
+
+*.log
+
+*.csv
