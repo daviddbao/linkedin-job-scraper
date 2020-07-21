@@ -4,3 +4,5 @@ config.py
 *.log
 
 *.csv
+
+__pycache__/*
